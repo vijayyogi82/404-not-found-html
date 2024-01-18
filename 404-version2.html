@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+        overflow: hidden;
+        margin: 0;
+        background-color: #f8f9fa;
+    }
+
+    #eye-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50vh;
+    }
+
+    .eye {
+        width: 120px;
+        height: 120px;
+        background-color: #fff;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        margin: 0 20px;
+    }
+
+    .pupil {
+        width: 60px;
+        height: 60px;
+        background-color: #000;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    h1 {
+        font-size: 12em;
+        color: #0072b9;
+        margin: 0;
+    }
+
+    .bubble {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        position: absolute;
+        pointer-events: none;
+        animation: bubble-rise 5s linear infinite;
+    }
+
+    .bubble:nth-child(1) { background-color: #ff6b6b; }
+    .bubble:nth-child(2) { background-color: #ffb366; }
+    .bubble:nth-child(3) { background-color: #ffd166; }
+    .bubble:nth-child(4) { background-color: #a0d468; }
+    .bubble:nth-child(5) { background-color: #4fc1e9; }
+    .bubble:nth-child(6) { background-color: #5d9cec; }
+    .bubble:nth-child(7) { background-color: #967adc; }
+
+    @keyframes bubble-rise {
+      to {
+        transform: translateY(-100vh);
+      }
+    }
+  </style>
+</head>
+<body>
+
+    <div class="container mt-4">
+        <p class="alert alert-warning text-center">Oops! The page you are looking for might be under construction or doesn't exist.</p>
+        <div id="eye-container">
+            <h1>4</h1>
+            <div class="eye" id="eye">
+                <div class="pupil" id="pupil"></div>
+            </div>
+            <h1>4</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="text-center">
+            <h2>Look like you're lost</h2>
+            <small>The page you are looking for is not available!</small><br>
+            <a href="#" class="btn btn-success mt-4"> Go To Home</a>
+        </div>
+    </div>
+
+
+  <script>
+    document.addEventListener('mousemove', (e) => {
+        const eye = document.getElementById('eye');
+        const pupil = document.getElementById('pupil');
+        const eyeRect = eye.getBoundingClientRect();
+
+        const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+        const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+        const deltaX = e.clientX - eyeCenterX;
+        const deltaY = e.clientY - eyeCenterY;
+
+        const angle = Math.atan2(deltaY, deltaX);
+        const distance = Math.min(eyeRect.width / 4, eyeRect.height / 4);
+
+        const pupilX = distance * Math.cos(angle);
+        const pupilY = distance * Math.sin(angle);
+
+        pupil.style.transform = `translate(-50%, -50%) translate(${pupilX}px, ${pupilY}px)`;
+    });
+  </script>
+
+<script>
+    function createBubble() {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        document.body.appendChild(bubble);
+
+        const startX = Math.random() * window.innerWidth;
+        const startY = window.innerHeight + 20;
+        bubble.style.left = `${startX}px`;
+        bubble.style.top = `${startY}px`;
+        bubble.classList.add('bubble-animation');
+        bubble.addEventListener('animationend', () => {
+            document.body.removeChild(bubble);
+        });
+    }
+    function generateBubbles() {
+      setInterval(createBubble, 1000);
+    }
+    generateBubbles();
+  </script>
+
+</body>
+</html>
